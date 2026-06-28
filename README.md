@@ -31,3 +31,8 @@ public static class Program
     }
 }
 ```
+
+## Benchmark Results
+
+<!-- BENCHMARK_RESULTS_START -->
+<!-- BENCHMARK_RESULTS_END -->
