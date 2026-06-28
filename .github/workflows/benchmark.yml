@@ -33,7 +33,7 @@ jobs:
       - name: Run Benchmarks
         run: |
           # Adjust project path to your benchmark project
-          dotnet run --configuration Release --project ./Fnv1aBenchmarks/Fnv1aBenchmarks.csproj
+          dotnet run --configuration Release --project ./UUIDv7.Benchmarks/UUIDv7.Benchmarks.csproj
           
           # If Benchmark.NET produces e.g. MyBenchmarks-report-github.md,
           # normalize it to BenchmarkResults.md:
