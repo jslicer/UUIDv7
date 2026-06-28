@@ -1,40 +1,3 @@
-# UUIDv7
-A .NET Standard 2.0 library to create UUIDv7-style Guids.
-
-Example:
-
-```cs
-namespace UUIDv7.Console;
-
-using static System.Console;
-using static Uuid7;
-
-public static class Program
-{
-    public static void Main()
-    {
-        WriteLine(UnixEpoch);
-        WriteLine(UnixEpochMax);
-        for (int i = 0; i < 20; i++)
-        {
-            WriteLine(Create());
-        }
-
-        WriteLine();
-
-        DateTimeOffset offset = DateTimeOffset.UtcNow;
-
-        for (int i = 0; i < 20; i++)
-        {
-            WriteLine(Create(offset));
-        }
-    }
-}
-```
-
-## Benchmark Results
-
-<!-- BENCHMARK_RESULTS_START -->
 ```
 
 BenchmarkDotNet v0.15.8, Linux Ubuntu 24.04.4 LTS (Noble Numbat)
@@ -51,4 +14,3 @@ AMD EPYC 7763 2.62GHz, 1 CPU, 4 logical and 2 physical cores
 | **BenchmarkMethod** | **10000**         |   **6,798.6 μs** |   **6.43 μs** |   **5.70 μs** |
 | **BenchmarkMethod** | **100000**        |  **65,599.2 μs** |  **97.32 μs** |  **86.27 μs** |
 | **BenchmarkMethod** | **1000000**       | **654,985.5 μs** | **752.81 μs** | **667.35 μs** |
-<!-- BENCHMARK_RESULTS_END -->
