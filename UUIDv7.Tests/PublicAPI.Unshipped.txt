@@ -1,0 +1,14 @@
+﻿#nullable enable
+UUIDv7.Tests.UuidV7Tests
+UUIDv7.Tests.UuidV7Tests.CreateWithoutTimestampShouldProduceVersion7WithCurrentTimestampRange() -> void
+UUIDv7.Tests.UuidV7Tests.CreateWithSameTimestampShouldTypicallyGenerateDifferentGuid() -> void
+UUIDv7.Tests.UuidV7Tests.CreateWithTimestampAfterUnixEpochMaxShouldThrow() -> void
+UUIDv7.Tests.UuidV7Tests.CreateWithTimestampBeforeUnixEpochShouldThrow() -> void
+UUIDv7.Tests.UuidV7Tests.CreateWithTimestampShouldEncodeUnixTimeMilliseconds() -> void
+UUIDv7.Tests.UuidV7Tests.CreateWithTimestampShouldSetRfcVariant10xx() -> void
+UUIDv7.Tests.UuidV7Tests.CreateWithTimestampShouldSetVersion7() -> void
+UUIDv7.Tests.UuidV7Tests.CreateWithUnixEpochMaxShouldSucceedAndEncodeTimestamp() -> void
+UUIDv7.Tests.UuidV7Tests.CreateWithUnixEpochShouldSucceedAndEncodeTimestamp() -> void
+UUIDv7.Tests.UuidV7Tests.UnixEpochMaxShouldMatchExpectedValue() -> void
+UUIDv7.Tests.UuidV7Tests.UnixEpochShouldMatchExpectedValue() -> void
+UUIDv7.Tests.UuidV7Tests.UuidV7Tests() -> void

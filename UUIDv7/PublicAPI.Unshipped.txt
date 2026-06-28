@@ -1,0 +1,6 @@
+﻿#nullable enable
+static UUIDv7.Uuid7.Create() -> System.Guid
+static UUIDv7.Uuid7.Create(System.DateTimeOffset timestamp) -> System.Guid
+static UUIDv7.Uuid7.UnixEpoch.get -> System.DateTimeOffset
+static UUIDv7.Uuid7.UnixEpochMax.get -> System.DateTimeOffset
+UUIDv7.Uuid7

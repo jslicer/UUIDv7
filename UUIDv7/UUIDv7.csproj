@@ -1,0 +1,93 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+    <PropertyGroup>
+        <TargetFramework>netstandard2.0</TargetFramework>
+
+        <RootNamespace>UUIDv7</RootNamespace>
+        <AssemblyName>UUIDv7</AssemblyName>
+
+        <Deterministic>true</Deterministic>
+        <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
+
+        <LangVersion>preview</LangVersion>
+        <Nullable>enable</Nullable>
+        <GeneratePackageOnBuild>True</GeneratePackageOnBuild>
+        <Title>Aesop.UUIDv7</Title>
+        <Description>A .NET Standard 2.0 library to create UUIDv7-style Guids.</Description>
+        <Copyright>Copyright (c) Always Elucidated Solution Pioneers, LLC. All rights reserved.</Copyright>
+        <PackageProjectUrl>https://github.com/jslicer/UUIDv7</PackageProjectUrl>
+        <PackageReadmeFile>README.md</PackageReadmeFile>
+        <RepositoryUrl>https://github.com/jslicer/UUIDv7</RepositoryUrl>
+        <RepositoryType>git</RepositoryType>
+        <PackageTags>GUID,UUID,UUIDv7</PackageTags>
+        <ImplicitUsings>enable</ImplicitUsings>
+        <GenerateDocumentationFile>True</GenerateDocumentationFile>
+        <ProduceReferenceAssembly>True</ProduceReferenceAssembly>
+        <EnforceCodeStyleInBuild>True</EnforceCodeStyleInBuild>
+        <EnableNETAnalyzers>True</EnableNETAnalyzers>
+        <AnalysisLevel>preview-all</AnalysisLevel>
+        <PackageLicenseFile>LICENSE</PackageLicenseFile>
+    </PropertyGroup>
+
+    <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
+      <WarningLevel>9999</WarningLevel>
+      <NoWarn />
+      <TreatWarningsAsErrors>True</TreatWarningsAsErrors>
+    </PropertyGroup>
+
+    <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
+      <WarningLevel>9999</WarningLevel>
+      <NoWarn />
+      <TreatWarningsAsErrors>True</TreatWarningsAsErrors>
+    </PropertyGroup>
+
+    <ItemGroup>
+      <None Remove="stylecop.json" />
+      <None Include="..\LICENSE" Pack="true" PackagePath="\" />
+      <None Include="..\README.md" Pack="true" PackagePath="\" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <AdditionalFiles Include="stylecop.json" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <PackageReference Include="IDisposableAnalyzers" Version="4.0.8">
+        <PrivateAssets>all</PrivateAssets>
+        <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+      </PackageReference>
+      <PackageReference Include="Microsoft.CodeAnalysis.Analyzers" Version="5.3.0">
+        <PrivateAssets>all</PrivateAssets>
+        <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+      </PackageReference>
+      <PackageReference Include="Microsoft.CodeAnalysis.NetAnalyzers" Version="10.0.301">
+        <PrivateAssets>all</PrivateAssets>
+        <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+      </PackageReference>
+      <PackageReference Include="Microsoft.CodeAnalysis.PublicApiAnalyzers" Version="3.3.4">
+        <PrivateAssets>all</PrivateAssets>
+        <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+      </PackageReference>
+      <PackageReference Include="Microsoft.VisualStudio.Threading.Analyzers" Version="18.7.23">
+        <PrivateAssets>all</PrivateAssets>
+        <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+      </PackageReference>
+      <PackageReference Include="ReflectionAnalyzers" Version="0.3.1">
+        <PrivateAssets>all</PrivateAssets>
+        <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+      </PackageReference>
+      <PackageReference Include="SecurityCodeScan.VS2019" Version="5.6.7">
+        <PrivateAssets>all</PrivateAssets>
+        <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+      </PackageReference>
+      <PackageReference Include="SonarAnalyzer.CSharp" Version="10.27.0.140913">
+        <PrivateAssets>all</PrivateAssets>
+        <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+      </PackageReference>
+      <PackageReference Include="StyleCop.Analyzers" Version="1.1.118">
+        <PrivateAssets>all</PrivateAssets>
+        <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+      </PackageReference>
+    </ItemGroup>
+
+</Project>

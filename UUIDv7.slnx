@@ -1,0 +1,10 @@
+<Solution>
+  <Folder Name="/Solution Items/">
+    <File Path="LICENSE" />
+    <File Path="README.md" />
+  </Folder>
+  <Project Path="UUIDv7.Benchmarks/UUIDv7.Benchmarks.csproj" />
+  <Project Path="UUIDv7.Console/UUIDv7.Console.csproj" />
+  <Project Path="UUIDv7.Tests/UUIDv7.Tests.csproj" />
+  <Project Path="UUIDv7/UUIDv7.csproj" />
+</Solution>

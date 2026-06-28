@@ -1,0 +1,8 @@
+﻿#nullable enable
+UUIDv7.Benchmarks.Benchmark
+UUIDv7.Benchmarks.Benchmark.Benchmark() -> void
+UUIDv7.Benchmarks.Benchmark.BenchmarkMethod() -> void
+UUIDv7.Benchmarks.Benchmark.PayloadLength.get -> int
+UUIDv7.Benchmarks.Benchmark.PayloadLength.set -> void
+UUIDv7.Benchmarks.BenchmarkConfig
+UUIDv7.Benchmarks.BenchmarkConfig.BenchmarkConfig() -> void
