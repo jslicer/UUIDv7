@@ -19,7 +19,6 @@ internal static class Program
     private static void Main()
     {
         WriteLine(UnixEpoch);
-        WriteLine(UnixEpochMax);
         for (int i = 0; i < 20; i++)
         {
             WriteLine(Create());
