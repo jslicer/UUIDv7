@@ -25,7 +25,7 @@ public static class Uuid7
 
     /// <summary>
     /// 281,474,976,710,655 milliseconds. Added to 00:00:00.0000000 UTC, January 1, 1970, in the Gregorian calendar
-    /// becomes approximately 2250-06-04 23:47:50.655 UTC.
+    /// becomes approximately 10889-09-17 00:25:26.710 UTC.
     /// </summary>
     private const long MaxUnixTimestampMilliseconds = (1L << 48) - 1;
 
@@ -60,7 +60,7 @@ public static class Uuid7
             throw new ArgumentOutOfRangeException(
                 nameof(timestamp),
                 timestamp,
-                "Dates before 1970-01-01 are not supported.");
+                "Date/times before 1970-01-01 00:00:00.000 UTC are not supported.");
         }
 
         //// ReSharper disable ComplexConditionExpression
@@ -71,7 +71,7 @@ public static class Uuid7
             throw new ArgumentOutOfRangeException(
                 nameof(timestamp),
                 timestamp,
-                "Dates after 2250-06-04 are not supported.");
+                "Dates after 10889-09-17 00:25:26.710 UTC are not supported.");
         }
 
         byte[] initialGuid = Guid.NewGuid().ToByteArray();
