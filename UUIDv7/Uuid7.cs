@@ -74,9 +74,7 @@ public static class Uuid7
                 "Dates after 2250-06-04 are not supported.");
         }
 
-        Span<byte> bytes = stackalloc byte[16];
-        
-        Guid.NewGuid().TryWriteBytes(bytes);
+        byte[] initialGuid = Guid.NewGuid().ToByteArray();
 
         // Guid's first three fields use mixed-endian representation internally. Supplying the timestamp as
         // these numeric fields causes Guid's canonical representation to contain the required big-endian
