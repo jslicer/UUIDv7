@@ -7,14 +7,13 @@ Example:
 namespace UUIDv7.Console;
 
 using static System.Console;
-using static Uuid7;
+using static UUIDv7.Uuid7;
 
 public static class Program
 {
     public static void Main()
     {
         WriteLine(UnixEpoch);
-        WriteLine(UnixEpochMax);
         for (int i = 0; i < 20; i++)
         {
             WriteLine(Create());
@@ -24,7 +23,7 @@ public static class Program
 
         DateTimeOffset offset = DateTimeOffset.UtcNow;
 
-        for (int i = 0; i < 20; i++)
+        for (int i = 0; i < 10; i++)
         {
             WriteLine(Create(offset));
         }

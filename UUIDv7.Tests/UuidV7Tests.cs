@@ -2,7 +2,7 @@
 // Copyright (c) Always Elucidated Solution Pioneers, LLC. All rights reserved.
 // </copyright>
 
-// Ignore Spelling: Dv Uuid
+// Ignore Spelling: Dv Guids Uuid
 namespace UUIDv7.Tests;
 
 using static Microsoft.VisualStudio.TestTools.UnitTesting.Assert;
@@ -54,7 +54,7 @@ public sealed class UuidV7Tests
     public void CreateWithTimestampShouldEncodeUnixTimeMilliseconds()
     {
 #pragma warning disable format
-        DateTimeOffset timestamp = new (2024, 12, 31, 23, 59, 59, 123, TimeSpan.Zero);
+        DateTimeOffset timestamp = new(2024, 12, 31, 23, 59, 59, 123, TimeSpan.Zero);
 #pragma warning restore format
         Guid guid = Create(timestamp);
         long actualUnixMilliseconds = ExtractUnixMilliseconds(guid);
@@ -69,7 +69,7 @@ public sealed class UuidV7Tests
     public void CreateWithTimestampShouldSetVersion7()
     {
 #pragma warning disable format
-        DateTimeOffset timestamp = new (2025, 1, 1, 0, 0, 0, TimeSpan.Zero);
+        DateTimeOffset timestamp = new(2025, 1, 1, 0, 0, 0, TimeSpan.Zero);
 #pragma warning restore format
         Guid guid = Create(timestamp);
         byte[] bytes = guid.ToByteArray();
@@ -86,7 +86,7 @@ public sealed class UuidV7Tests
     public void CreateWithTimestampShouldSetRfcVariant10xx()
     {
 #pragma warning disable format
-        DateTimeOffset timestamp = new (2025, 1, 1, 0, 0, 0, TimeSpan.Zero);
+        DateTimeOffset timestamp = new(2025, 1, 1, 0, 0, 0, TimeSpan.Zero);
 #pragma warning restore format
         Guid guid = Create(timestamp);
         byte[] bytes = guid.ToByteArray();
@@ -121,15 +121,15 @@ public sealed class UuidV7Tests
     /// Verifies two UUIDv7 values created at the same timestamp are expected to differ due to randomness.
     /// </summary>
     [TestMethod]
-    public void CreateWithSameTimestampShouldTypicallyGenerateDifferentGuid()
+    public void CreateWithSameTimestampShouldGenerateMonotonicallyIncreasingGuids()
     {
 #pragma warning disable format
-        DateTimeOffset timestamp = new (2025, 2, 3, 4, 5, 6, 789, TimeSpan.Zero);
+        DateTimeOffset timestamp = new(2025, 2, 3, 4, 5, 6, 789, TimeSpan.Zero);
 #pragma warning restore format
         Guid first = Create(timestamp);
         Guid second = Create(timestamp);
 
-        AreNotEqual(first, second);
+        IsGreaterThan(first, second);
     }
 
     private static long ExtractUnixMilliseconds(Guid guid)

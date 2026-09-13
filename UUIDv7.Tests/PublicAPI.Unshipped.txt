@@ -1,7 +1,7 @@
 ﻿#nullable enable
 UUIDv7.Tests.UuidV7Tests
 UUIDv7.Tests.UuidV7Tests.CreateWithoutTimestampShouldProduceVersion7WithCurrentTimestampRange() -> void
-UUIDv7.Tests.UuidV7Tests.CreateWithSameTimestampShouldTypicallyGenerateDifferentGuid() -> void
+UUIDv7.Tests.UuidV7Tests.CreateWithSameTimestampShouldGenerateMonotonicallyIncreasingGuids() -> void
 UUIDv7.Tests.UuidV7Tests.CreateWithTimestampBeforeUnixEpochShouldThrow() -> void
 UUIDv7.Tests.UuidV7Tests.CreateWithTimestampShouldEncodeUnixTimeMilliseconds() -> void
 UUIDv7.Tests.UuidV7Tests.CreateWithTimestampShouldSetRfcVariant10xx() -> void

@@ -19,15 +19,41 @@ public static class Uuid7
     // ReSharper disable once InconsistentNaming
     private const byte Variant10xxValue = 0x80;
 
-    private const ushort VersionMask = 0xF000;
-
     private const ushort Version7Value = 0x7000;
+
+    /// <summary>
+    /// Mask isolating the 12-bit <c>rand_a</c> field (the bits immediately following the version nibble) that is
+    /// repurposed as a monotonic counter per RFC 9562 Section 6.2, Method 3 (Monotonic Random).
+    /// </summary>
+    private const ushort CounterMask = 0x0FFF;
 
     /// <summary>
     /// 281,474,976,710,655 milliseconds. Added to 00:00:00.0000000 UTC, January 1, 1970, in the Gregorian calendar
     /// becomes approximately 10889-09-17 00:25:26.710 UTC.
     /// </summary>
     private const long MaxUnixTimestampMilliseconds = (1L << 48) - 1;
+
+#pragma warning disable IDE1006 // Naming Styles
+    /// <summary>
+    /// Synchronizes access to <see cref="_lastTimestampMilliseconds" /> and <see cref="_lastCounter" /> so that the
+    /// monotonic counter is updated atomically across concurrent callers.
+    /// </summary>
+    // ReSharper disable once InconsistentNaming
+    private static readonly object _MonotonicityLock = new();
+
+    /// <summary>
+    /// The Unix timestamp, in milliseconds, used by the most recently created Version 7 <see cref="Guid" />.
+    /// </summary>
+    // ReSharper disable once InconsistentNaming
+    private static long _lastTimestampMilliseconds = -1;
+
+    /// <summary>
+    /// The 12-bit counter value embedded in the <c>rand_a</c> field of the most recently created Version 7
+    /// <see cref="Guid" />, used to preserve ordering for values created within the same millisecond.
+    /// </summary>
+    // ReSharper disable once InconsistentNaming
+    private static ushort _lastCounter;
+#pragma warning restore IDE1006 // Naming Styles
 
     /// <summary>
     /// Gets the unix epoch. The value of this constant is equivalent to 00:00:00.0000000 UTC, January 1, 1970, in
@@ -37,7 +63,7 @@ public static class Uuid7
     /// The unix epoch - equivalent to 00:00:00.0000000 UTC, January 1, 1970, in the Gregorian calendar.
     /// </value>
 #pragma warning disable format
-    public static DateTimeOffset UnixEpoch { get; } = new (1970, 1, 1, 0, 0, 0, TimeSpan.Zero);
+    public static DateTimeOffset UnixEpoch { get; } = new(1970, 1, 1, 0, 0, 0, TimeSpan.Zero);
 #pragma warning restore format
 
     /// <summary>Creates a new <see cref="Guid" /> using the current date/time, according to RFC 9562, following
@@ -49,8 +75,13 @@ public static class Uuid7
     /// <summary>Creates a new <see cref="Guid" /> according to RFC 9562, following the Version 7 format.</summary>
     /// <param name="timestamp">The optional date time offset used to determine the Unix Epoch timestamp.</param>
     /// <returns>A new <see cref="Guid" /> according to RFC 9562, following the Version 7 format.</returns>
+    /// <remarks>Values created within the same millisecond are monotonically increasing: the 12-bit <c>rand_a</c>
+    /// field is used as a counter (RFC 9562 Section 6.2, Method 3) instead of being fully random, so a value
+    /// created after another within the same millisecond will always sort later. This method is thread-safe with
+    /// respect to that guarantee.</remarks>
     /// <exception cref="ArgumentOutOfRangeException"><paramref name="timestamp" /> represents an offset prior to
-    /// <see cref="DateTimeOffset" /> of zero.</exception>
+    /// <see cref="DateTimeOffset" /> of zero, or a value whose monotonic counter would overflow past the maximum
+    /// representable Unix Epoch timestamp.</exception>
     // ReSharper disable once MethodTooLong
     // ReSharper disable once TooManyDeclarations
     public static Guid Create(DateTimeOffset timestamp)
@@ -75,20 +106,53 @@ public static class Uuid7
         }
 
         byte[] initialGuid = Guid.NewGuid().ToByteArray();
+        ushort counter;
+
+        lock (_MonotonicityLock)
+        {
+            if (unixTsMs == _lastTimestampMilliseconds)
+            {
+                // Same millisecond as the previous value: advance the counter to preserve ordering.
+                counter = (ushort)((_lastCounter + 1) & CounterMask);
+
+                if (counter == 0)
+                {
+                    // The counter wrapped around within this millisecond. Borrow a millisecond so the resulting Guid
+                    // still sorts after every value already generated for the previous timestamp.
+                    unixTsMs++;
+
+                    if (unixTsMs > MaxUnixTimestampMilliseconds)
+                    {
+                        throw new ArgumentOutOfRangeException(
+                            nameof(timestamp),
+                            timestamp,
+                            "Dates after 10889-09-17 00:25:26.710 UTC are not supported.");
+                    }
+                }
+            }
+            else
+            {
+                // New millisecond: reseed the counter from fresh randomness rather than starting at zero, so
+                // consecutive timestamps don't leak how many values were generated in the prior millisecond.
+                counter = (ushort)(((initialGuid[6] << 8) | initialGuid[7]) & CounterMask);
+            }
+
+            _lastTimestampMilliseconds = unixTsMs;
+            _lastCounter = counter;
+        }
 
         // Guid's first three fields use mixed-endian representation internally. Supplying the timestamp as
         // these numeric fields causes Guid's canonical representation to contain the required big-endian
         // 48-bit Unix timestamp.
         int a = (int)(unixTsMs >> 16);
         short b = (short)unixTsMs;
-        short resultC = (short)(initialGuid[6] | (initialGuid[7] << 8));
-        short c = (short)((resultC & ~VersionMask) | Version7Value);
-        byte resultD = initialGuid[8];
-        byte d = (byte)((resultD & ~Variant10xxMask) | Variant10xxValue);
+        short c = (short)(counter | Version7Value);
+        byte randomD = initialGuid[8];
+        byte d = (byte)((randomD & ~Variant10xxMask) | Variant10xxValue);
         //// ReSharper restore ComplexConditionExpression
 
 #pragma warning disable format
-        return new (
+        return new(
             a,
             b,
             c,

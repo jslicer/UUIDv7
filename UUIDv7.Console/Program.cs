@@ -6,7 +6,7 @@
 namespace UUIDv7.Console;
 
 using static System.Console;
-using static Uuid7;
+using static UUIDv7.Uuid7;
 
 /// <summary>
 /// Holds the entry point of the application.
