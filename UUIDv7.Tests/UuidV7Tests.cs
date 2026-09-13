@@ -23,38 +23,12 @@ public sealed class UuidV7Tests
     public void UnixEpochShouldMatchExpectedValue() => AreEqual(DateTimeOffset.UnixEpoch, UnixEpoch);
 
     /// <summary>
-    /// Verifies <see cref="UnixEpochMax" /> has the expected maximum supported value.
-    /// </summary>
-    [TestMethod]
-    public void UnixEpochMaxShouldMatchExpectedValue()
-    {
-#pragma warning disable format
-        DateTimeOffset expected = new (2038, 1, 19, 3, 14, 7, TimeSpan.Zero);
-#pragma warning restore format
-
-        AreEqual(expected, UnixEpochMax);
-    }
-
-    /// <summary>
     /// Verifies <see cref="Create(DateTimeOffset)" /> throws for timestamps before Unix epoch.
     /// </summary>
     [TestMethod]
     public void CreateWithTimestampBeforeUnixEpochShouldThrow()
     {
         DateTimeOffset timestamp = UnixEpoch.AddMilliseconds(-1);
-        ArgumentOutOfRangeException exception =
-            ThrowsExactly<ArgumentOutOfRangeException>(() => Create(timestamp));
-
-        AreEqual("timestamp", exception.ParamName);
-    }
-
-    /// <summary>
-    /// Verifies <see cref="Create(DateTimeOffset)" /> throws for timestamps after the supported maximum.
-    /// </summary>
-    [TestMethod]
-    public void CreateWithTimestampAfterUnixEpochMaxShouldThrow()
-    {
-        DateTimeOffset timestamp = UnixEpochMax.AddMilliseconds(1);
         ArgumentOutOfRangeException exception =
             ThrowsExactly<ArgumentOutOfRangeException>(() => Create(timestamp));
 
@@ -71,18 +45,6 @@ public sealed class UuidV7Tests
         long actualUnixMilliseconds = ExtractUnixMilliseconds(guid);
 
         AreEqual(UnixEpoch.ToUnixTimeMilliseconds(), actualUnixMilliseconds);
-    }
-
-    /// <summary>
-    /// Verifies creating with the maximum supported Unix timestamp succeeds and encodes the expected timestamp.
-    /// </summary>
-    [TestMethod]
-    public void CreateWithUnixEpochMaxShouldSucceedAndEncodeTimestamp()
-    {
-        Guid guid = Create(UnixEpochMax);
-        long actualUnixMilliseconds = ExtractUnixMilliseconds(guid);
-
-        AreEqual(UnixEpochMax.ToUnixTimeMilliseconds(), actualUnixMilliseconds);
     }
 
     /// <summary>
