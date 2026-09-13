@@ -24,6 +24,12 @@ public static class Uuid7
     private const ushort Version7Value = 0x7000;
 
     /// <summary>
+    /// 281,474,976,710,655 milliseconds. Added to 00:00:00.0000000 UTC, January 1, 1970, in the Gregorian calendar
+    /// becomes approximately 2250-06-04 23:47:50.655 UTC.
+    /// </summary>
+    private const long MaxUnixTimestampMilliseconds = (1L << 48) - 1;
+
+    /// <summary>
     /// Gets the unix epoch. The value of this constant is equivalent to 00:00:00.0000000 UTC, January 1, 1970, in
     /// the Gregorian calendar. <see cref="UnixEpoch" /> defines the point in time when Unix time is equal to 0.
     /// </summary>
@@ -33,12 +39,6 @@ public static class Uuid7
 #pragma warning disable format
     public static DateTimeOffset UnixEpoch { get; } = new (1970, 1, 1, 0, 0, 0, TimeSpan.Zero);
 #pragma warning restore format
-
-    /// <summary>
-    /// 281,474,976,710,655 milliseconds. Added to 00:00:00.0000000 UTC, January 1, 1970, in the Gregorian calendar
-    /// becomes approximately 2250-06-04 23:47:50.655 UTC.
-    /// </summary>
-    private const long MaxUnixTimestampMilliseconds = (1L << 48) - 1;
 
     /// <summary>Creates a new <see cref="Guid" /> using the current date/time, according to RFC 9562, following
     /// the Version 7 format.</summary>
