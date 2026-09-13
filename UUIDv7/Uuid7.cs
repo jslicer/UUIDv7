@@ -35,16 +35,10 @@ public static class Uuid7
 #pragma warning restore format
 
     /// <summary>
-    /// Gets the unix epoch. The value of this constant is equivalent to 03:14:07.0000000 UTC, January 19, 2038, in
-    /// the Gregorian calendar. <see cref="UnixEpochMax" /> defines the point in time when Unix time is equal to
-    /// 2147483647.
+    /// 281,474,976,710,655 milliseconds. Added to 00:00:00.0000000 UTC, January 1, 1970, in the Gregorian calendar
+    /// becomes approximately 2250-06-04 23:47:50.655 UTC.
     /// </summary>
-    /// <value>
-    /// The unix epoch - equivalent to 03:14:07.0000000 UTC, January 19, 2038, in the Gregorian calendar.
-    /// </value>
-#pragma warning disable format
-    public static DateTimeOffset UnixEpochMax { get; } = new (2038, 1, 19, 3, 14, 7, TimeSpan.Zero);
-#pragma warning restore format
+    private const long MaxUnixTimestampMilliseconds = (1L << 48) - 1;
 
     /// <summary>Creates a new <see cref="Guid" /> using the current date/time, according to RFC 9562, following
     /// the Version 7 format.</summary>
@@ -69,17 +63,24 @@ public static class Uuid7
                 "Dates before 1970-01-01 are not supported.");
         }
 
-        if (timestamp > UnixEpochMax)
+        //// ReSharper disable ComplexConditionExpression
+        long unixTsMs = timestamp.ToUnixTimeMilliseconds();
+
+        if (unixTsMs > MaxUnixTimestampMilliseconds)
         {
             throw new ArgumentOutOfRangeException(
                 nameof(timestamp),
                 timestamp,
-                "Dates after 2038-01-19 are not supported.");
+                "Dates after 2250-06-04 are not supported.");
         }
 
-        //// ReSharper disable ComplexConditionExpression
-        long unixTsMs = timestamp.ToUnixTimeMilliseconds();
-        byte[] initialGuid = Guid.NewGuid().ToByteArray();
+        Span<byte> bytes = stackalloc byte[16];
+        
+        Guid.NewGuid().TryWriteBytes(bytes);
+
+        // Guid's first three fields use mixed-endian representation internally. Supplying the timestamp as
+        // these numeric fields causes Guid's canonical representation to contain the required big-endian
+        // 48-bit Unix timestamp.
         int a = (int)(unixTsMs >> 16);
         short b = (short)unixTsMs;
         short resultC = (short)(initialGuid[6] | (initialGuid[7] << 8));
